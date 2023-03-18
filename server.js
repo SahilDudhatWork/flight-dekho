@@ -4,6 +4,7 @@ const cors = require("cors");
 const https = require('https');
 const http = require('http');
 const fs = require('fs');
+const { format } = require('date-fns');
 const app = express();
 
 var corsOptions = {
@@ -23,6 +24,9 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to flight-dekho application." });
 });
 app.post("/register", (req, res) => {
+  const currentDate = new Date();
+  const create_at = format(currentDate, 'yyyy-MM-dd');
+  req.body['create_at'] = create_at
   const existingData = fs.readFileSync('./users.json');
   const existingObj = JSON.parse(existingData);
   existingObj.push(req.body);
@@ -43,6 +47,9 @@ app.get("/users",(req,res) => {
   })
 })
 app.post("/book-flight-by-user",(req,res) => {
+      const currentDate = new Date();
+  const booked_at = format(currentDate, 'yyyy-MM-dd');
+  req.body['booked_at'] = booked_at
  const existingData = fs.readFileSync('./booked-flights.json');
   const existingObj = JSON.parse(existingData);
   existingObj.push(req.body);
