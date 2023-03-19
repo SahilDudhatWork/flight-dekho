@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true, limit: "5000mb", parameterLimit: 50
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to flight-dekho application." });
 });
-app.post("/register", (req, res) => {
+app.post("/register",  (req, res) => {
   const currentDate = new Date();
   const create_at = format(currentDate, 'yyyy-MM-dd');
   req.body['create_at'] = create_at
@@ -37,9 +37,9 @@ app.post("/register", (req, res) => {
     message:'Users registered successfully.'
   })
 });
-app.get("/users",(req,res) => {
+app.get("/users", async (req,res) => {
   const existingData = fs.readFileSync('./users.json');
-  const existingObj = JSON.parse(existingData);
+  const existingObj = await JSON.parse(existingData);
   res.json({
     data:existingObj,
     status:200,
@@ -60,9 +60,9 @@ app.post("/book-flight-by-user",(req,res) => {
     message:'Your flight booked successfully.'
   })
 })
-app.get("/booked-flights",(req,res) => {
+app.get("/booked-flights", async (req,res) => {
   const existingData = fs.readFileSync('./booked-flights.json');
-  const existingObj = JSON.parse(existingData);
+  const existingObj = await JSON.parse(existingData);
   res.json({
     data:existingObj,
     status:200,
